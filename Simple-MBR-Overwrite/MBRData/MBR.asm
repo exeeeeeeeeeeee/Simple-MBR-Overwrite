@@ -7,7 +7,7 @@ cld                ; DF=0 because our LODSB requires it
 mov     ax, 0012h  ; Select 640x480 16-color graphics video mode
 int     10h
 mov     si, string
-mov     bl, 4      ; Color
+mov     bl, 4      ; Red Color
 call    printstr
 jmp     $
 
@@ -27,7 +27,7 @@ print:
                     
     jmp     print
 
-string db "Your system has been destroyed!", 0
+string db "Your system has been destroyed!", 0 ; Change as needed
 
 times 510 - ($-$$) db 0
 dw      0AA55h
